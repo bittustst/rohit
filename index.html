@@ -1,73 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instagram Login</title>
+  <title>Save form Data in a Text File using JavaScript</title>
   <style>
-    /* CSS styles can go here */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fafafa;
-    }
-    .container {
-      max-width: 350px;
-      margin: 100px auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      text-align: center;
-    }
-    h2 {
-      margin-bottom: 20px;
-    }
-    input[type="text"],
-    input[type="password"],
-    button {
-      width: 100%;
+    * { box-sizing: border-box; font-family: Corbel; }
+    div {
       padding: 10px;
-      margin-bottom: 10px;
+      background-color: #f6f6f6;
+      overflow: hidden;
+    }
+    input[type=text], textarea, select {
+      font-size: 18px;
+      width: 100%;
+      padding: 12px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
+      border-radius: 4px;
     }
-    button {
-      background-color: #3897f0;
-      color: #fff;
-      border: none;
+    input[type=button]{ 
+      font-size: 18px;
+      width: auto;
+      float: right;
       cursor: pointer;
+      padding: 7px;
     }
-    button:hover {
-      background-color: #357ae8;
-    }
+    a { color: blue; }
   </style>
-
 </head>
 <body>
+  <h2>Enter values in the boxes and click Save</h2>
+  <div>
+    <!--Add few elements to the form-->
 
-</form>
-</div>
-<h1>Instagram</h1>
- 
-<input type="text" id="inputF" placeholder="Username">
-  <input type="text" id="inputField" placeholder="password">
-  <button onclick="saveToFile()">Submit</button>
-
-<p>Don't have an account? <a href="#">Sign up</a></p>
-
+    <div>
+      <input type="text" id="txtName" placeholder="Enter your name" />
+    </div>
+    <div>
+      <input type="text" id="txtAge" placeholder="Enter your age" />
+    </div>
+    <div>
+      <input type="text" id="txtEmail" 
+             placeholder="Enter your email address" />
+    </div>
+    <div>
+      <select id="selCountry">
+        <option selected value="">-- Choose the country --</option>
+        <option value="India">India</option>
+        <option value="Japan">Japan</option>
+        <option value="USA">USA</option>
+      </select>
+    </div>
+    <div>
+      <textarea id="msg" name="msg" 
+      	placeholder="Write some message ..." style="height:100px">     </textarea>
+    </div>
+    <div>
+      <input type="button" id="bt" 
+             value="Save data to file" onclick="saveFile()" />
+    </div>
+  </div>
+  
+  <p>
+    You can read the data from the text file. <a href='https://www.encodedna.com/javascript/read-text-file-from-url-in-javascript-using-async-await.htm' target='_blank'>See this post</a>
+  </p>
+  </body>
   <script>
-    function saveToFile() {
-      const inputText = document.getElementById('inputField').value;
-      const Text = document.getElementById('inputF').value;
+    let saveFile = () => {
 
-      // Create a Blob with the input text
-      const blob = new Blob([inputText], { type: 'text/plain' });
-      const blo = new Blob([Text], { type: 'text/plain' });
-      // Create a link element
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'input.txt'; // File name
-      link.click();
+      // Get the data from each element on the form.
+      const name = document.getElementById('txtName');
+      const age = document.getElementById('txtAge');
+      const email = document.getElementById('txtEmail');
+      const country = document.getElementById('selCountry');
+      const msg = document.getElementById('msg');
+
+      // This variable stores all the data.
+      let data = 
+          '\r Name: ' + name.value + ' \r\n ' + 
+          'Age: ' +age.value + ' \r\n ' + 
+          'Email: ' + email.value + ' \r\n ' + 
+          'Country: ' + country.value + ' \r\n ' + 
+          'Message: ' + msg.value;
+
+      // Convert the text to BLOB.
+      const textToBLOB = new Blob([data], { type: 'text/plain' });
+      const sFileName = 'formData.txt';	   // The file to save the data.
+
+      let newLink = document.createElement("a");
+      newLink.download = sFileName;
+
+      if (window.webkitURL != null) {
+        newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+      }
+      else {
+        newLink.href = window.URL.createObjectURL(textToBLOB);
+        newLink.style.display = "none";
+        document.body.appendChild(newLink);
+      }
+
+      newLink.click(); 
     }
-  </script>
-</body>
+</script>
 </html>
